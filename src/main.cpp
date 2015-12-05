@@ -3,8 +3,9 @@
 #include <vector>
 #include "time_difference.h"
 
-const int THE_NUMBER = 10000000; // 10^7
+const int THE_NUMBER = 100000000; // 10^7
 
+// The function we want to stresstest!
 void sum(int from, int to, long* out) {
     if (from > to) throw "Please give arguments in ascending order";
 
@@ -17,77 +18,61 @@ void sum(int from, int to, long* out) {
     *out = sum;
 }
 
-long splitSumIntoWorkersAndWait(int numToSum, int numWorkers) {
-    std::vector<std::thread*> threads;
-    std::vector<long*> outputs;
+// A simple worker struct which simply holds the pointer to the output and the
+// thread reference.
+typedef struct Worker {
+    long* output = new long(0);
+    std::thread* thread = nullptr;
 
-    for (int i = 0; i < numWorkers; i++) {
-        long* out = new long;
-        outputs.push_back(out);
+    Worker() { std::cout << "Creating worker " << this << std::endl; }
+    ~Worker() {
+        delete this->output;
+        if (this->thread != nullptr) {
+            delete this->thread;
+        }
+    }
+} Worker;
+
+long splitSumIntoWorkersAndWait(int numToSum, int numWorkers) {
+    std::vector<Worker*> workers;
+
+    // Split of workers each having a chunk of the payload
+    for (int i = 0; i < numWorkers; ++i) {
         int from = (i * numToSum / numWorkers) + 1;
         int to = (i + 1) * numToSum / numWorkers;
-        threads.push_back(new std::thread(sum, from, to, out));
+        Worker* w = new Worker;
+        w->thread = new std::thread(sum, from, to, w->output);
+        workers.push_back(w);
     }
 
-    for (std::thread* t : threads) {
-        std::cout << "joined" << std::endl;
-        t->join();
-        delete t;
+    // Join all workers and store al the return values
+    long ret = 0;
+    for (Worker* w : workers) {
+        w->thread->join();
+        ret += *w->output;
+        delete w;
     }
 
-    for (long* output : outputs) {
-        std::cout << *output << std::endl;
-    }
+    return ret;
+}
+
+// calls the splitAndWait function and timebenches it.
+void test(int number, int numWorkers) {
+    std::cout << "Running a test with " << numWorkers << " threads." << std::endl;
+    TimeDifference* timer = new TimeDifference();
+    timer->begin();
+    long result = splitSumIntoWorkersAndWait(number, numWorkers);
+    timer->end();
+    std::cout << "The solution is: " << result << std::endl;
+    std::cout << "Elapsed time: " << timer->getElapsedTime() << "ms" << std::endl << std::endl;
 }
 
 int main(int argc, char *argv[])
 {
-    splitSumIntoWorkersAndWait(THE_NUMBER, 4);
-    // // Single Threaded
-    // std::cout << "Running single threaded example: " << std::endl;
-    // TimeDifference* timer = new TimeDifference();
-    // timer->begin();
-    // long *out = new long;
-    // sum(0, numberToSumUp, out);
-    // timer->end();
-    // std::cout << "Solution: " << *out << std::endl;
-    // std::cout << "Time elapsed: " << timer->getElapsedTime() << "ms" << std::endl << std::endl;
-    // delete timer;
-    //
-    // // Multithreaded
-    // std::cout << "Running example with 2 threads" << std::endl;
-    // timer = new TimeDifference();
-    // timer->begin();
-    //
-    // long* out1 = new long;
-    // long* out2 = new long;
-    // std::thread t1(sum, 0, numberToSumUp/2, out1);
-    // std::thread t2(sum, numberToSumUp/2 + 1, numberToSumUp, out2);
-    // t1.join();
-    // t2.join();
-    //
-    // std::cout << "Solution: " << *out1 + *out2 << std::endl;
-    // timer->end();
-    // std::cout << "Time elapsed: " << timer->getElapsedTime() << "ms" << std::endl << std::endl;
-    // delete timer;
-    //
-    // // 3 threads
-    // std::cout << "Running example with 3 threads" << std::endl;
-    // timer = new TimeDifference();
-    // timer->begin();
-    //
-    // long* out4 = new long;
-    // long* out5 = new long;
-    // long* out6 = new long;
-    // std::thread t4(sum, 0, numberToSumUp/3, out4);
-    // std::thread t5(sum, numberToSumUp/3 + 1, 2 * numberToSumUp/3, out5);
-    // std::thread t6(sum, 2 * numberToSumUp/3 + 1, numberToSumUp, out6);
-    // t4.join();
-    // t5.join();
-    // t6.join();
-    //
-    // std::cout << "Solution: " << *out4 + *out5 + *out6 << std::endl;
-    // timer->end();
-    // std::cout << "Time elapsed: " << timer->getElapsedTime() << "ms" << std::endl;
+    test(THE_NUMBER, 1);
+    test(THE_NUMBER, 2);
+    test(THE_NUMBER, 4);
+    test(THE_NUMBER, 8);
+    test(THE_NUMBER, 16);
     return 0;
 }
