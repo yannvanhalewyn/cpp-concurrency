@@ -2,12 +2,12 @@
 #include <thread>
 #include "time_difference.h"
 
-const int numberToSumUp = 1000000;
+const int numberToSumUp = 10000000; // 10^7
 
-int sum(int from = 0, int to = 0) {
+long sum(int from = 0, int to = 0) {
     if (from > to) throw "Please give arguments in ascending order";
 
-    int sum = 0;
+    long sum = 0;
 
     for (int i = from; i <= to; i++) {
         sum += i;
