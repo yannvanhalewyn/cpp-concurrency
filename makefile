@@ -16,10 +16,10 @@ EXEC := $(addprefix $(BINDIR)/, $(EXEC))
 
 # Sources
 SOURCES := $(shell find $(SRCDIR) -name '*.cpp')
-HEADERS := $(shell find $(SRCDIR) -name '*.hpp')
+HEADERS := $(shell find $(SRCDIR) -name '*.h')
 OBJECTS := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
-$(EXEC): $(OBJECTS) $(HEADERS)
+$(EXEC): $(OBJECTS)
 	@[ -d $(BINDIR) ] || (mkdir $(BINDIR) && echo "made $(BINDIR) dir")
 	$(CC) $(LDLFLAGS) $^ -o $@
 
