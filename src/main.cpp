@@ -1,10 +1,10 @@
 #include <iostream>
-#include <thread>
+#include <future>
 #include "time_difference.h"
 
 const int numberToSumUp = 10000000; // 10^7
 
-long sum(int from = 0, int to = 0) {
+void sum(int from, int to, long* out) {
     if (from > to) throw "Please give arguments in ascending order";
 
     long sum = 0;
@@ -12,19 +12,30 @@ long sum(int from = 0, int to = 0) {
     for (int i = from; i <= to; i++) {
         sum += i;
     }
-
-    return sum;
+    *out = sum;
 }
 
 int main(int argc, char *argv[])
 {
-    TimeDifference* t = new TimeDifference();
-    t->begin();
+    // Multithreaded
+    std::cout << "Running example with 2 threads" << std::endl;
+    TimeDifference* timer = new TimeDifference();
+    timer->begin();
 
-    std::cout << "Solution: " << sum(0, numberToSumUp) << std::endl;
 
-    t->end();
+    long* out1 = new long;
+    long* out2 = new long;
 
-    std::cout << "Time elapsed: " << t->getElapsedTime() << "ms" << std::endl;
+    std::thread t1(sum, 0, numberToSumUp/2, out1);
+    std::thread t2(sum, numberToSumUp/2 + 1, numberToSumUp, out2);
+
+    t1.join();
+    t2.join();
+
+    std::cout << "Solution: " << *out1 + *out2 << std::endl;
+
+    timer->end();
+
+    std::cout << "Time elapsed: " << timer->getElapsedTime() << "ms" << std::endl;
     return 0;
 }
