@@ -1,15 +1,15 @@
-#include "time_difference.h"
+#include "stopwatch.h"
 #include "iostream"
 
-void TimeDifference::begin() {
+void Stopwatch::begin() {
     m_start = std::chrono::high_resolution_clock::now();
 }
 
-void TimeDifference::end() {
+void Stopwatch::end() {
     m_end = std::chrono::high_resolution_clock::now();
 }
 
-double TimeDifference::getElapsedTime() {
+double Stopwatch::getElapsedTime() {
     std::chrono::duration<double, std::milli> elapsed = m_end - m_start;
     return elapsed.count();
 }

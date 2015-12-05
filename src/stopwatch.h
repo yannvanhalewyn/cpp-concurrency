@@ -1,12 +1,12 @@
-#ifndef __TIME_DIFFERENCE_H__
-#define __TIME_DIFFERENCE_H__
+#ifndef __STOPWATCH_H__
+#define __STOPWATCH_H__
 
 #include <chrono>
 
-class TimeDifference
+class Stopwatch
 {
 public:
-    TimeDifference () {}
+    Stopwatch () {}
     void begin();
     void end();
     double getElapsedTime();

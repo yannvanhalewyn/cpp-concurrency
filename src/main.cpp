@@ -1,7 +1,7 @@
 #include <iostream>
 #include <thread>
 #include <vector>
-#include "time_difference.h"
+#include "stopwatch.h"
 #include "worker.h"
 
 const long THE_NUMBER = 1000000000; // 10^9
@@ -41,7 +41,7 @@ long splitLoadIntoWorkersAndWait(long load, int numWorkers) {
 void test(long number, int numWorkers) {
     std::cout << "Running a test with " << numWorkers << " threads."
         << std::endl;
-    TimeDifference* timer = new TimeDifference();
+    Stopwatch* timer = new Stopwatch();
     timer->begin();
     long result = splitLoadIntoWorkersAndWait(number, numWorkers);
     timer->end();
