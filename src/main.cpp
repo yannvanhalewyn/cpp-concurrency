@@ -4,7 +4,7 @@
 #include "stopwatch.h"
 #include "worker.h"
 
-const long THE_NUMBER = 1000000000; // 10^9
+const long THE_NUMBER = 100000000; // 10^9
 
 // The function we want to stresstest!
 void sum(long from, long to, long* out) {
@@ -38,12 +38,12 @@ long splitLoadIntoWorkersAndWait(long load, int numWorkers) {
 }
 
 // calls the splitAndWait function and timebenches it.
-void test(long number, int numWorkers) {
+void test(long load, int numWorkers) {
     std::cout << "Running a test with " << numWorkers << " threads."
         << std::endl;
     Stopwatch* timer = new Stopwatch();
     timer->begin();
-    long result = splitLoadIntoWorkersAndWait(number, numWorkers);
+    long result = splitLoadIntoWorkersAndWait(load, numWorkers);
     timer->end();
     std::cout << "The solution is: " << result << std::endl;
     std::cout << "Elapsed time: " << timer->getElapsedTime() << "ms"

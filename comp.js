@@ -9,7 +9,7 @@ function sum(x) {
 
 // Timing the result
 var start = new Date().getTime();
-var result = sum(1000000000);
+var result = sum(100000000);
 var end = new Date().getTime();
 
 console.log("Result: ", result);
