@@ -2,31 +2,48 @@
 
 NUM = 100000000
 
-def sum(from,x)
+def sum(from, to)
   sum = 0
-  for i in from..x
+  for i in from..to
     sum += i
   end
   sum
 end
 
+# Splits given a load and returns a hash with :from and :to as if the
+# $load had been split into $chunks equal chunks
+def splitLoad load, chunk, chunks
+  return {
+    from: (load * (chunk - 1) / chunks) + 1,
+    to: load * (chunk) / chunks
+  }
+end
+
 def splitLoadIntoWorkersAndWait(load, numWorkers)
   # Split load into multiple work chunks and hand those to threads
   workers = []
-  (0..numWorkers-1).each do |i|
-    from = (i * load / numWorkers) + 1;
-    to = (i + 1) * load / numWorkers;
-    workers << Thread.new { Thread.current[:output] = sum(from, to) }
+  (1..numWorkers).each do |i|
+    chunk = splitLoad load, i, numWorkers
+    workers << Thread.new { Thread.current[:output] = sum(chunk[:from], chunk[:to]) }
   end
 
   # Join each thread and store the output
   ret = 0
   workers.each do |w|
-    puts "Joining worker"
     ret += w.join[:output]
   end
 
   ret
+end
+
+def splitLoadIntoProcessesAndWait(load, numProcesses)
+  (0..numProcesses-1).each do |i|
+    chunk = splitLoad load, i, numProcesses
+    fork do
+      sum(chunk[:from], chunk[:to])
+    end
+  end
+  Process.waitall
 end
 
 def test(load, numWorkers)
