@@ -4,8 +4,10 @@ NUM = ARGV[0] ? ARGV[0].to_i : 500000000 # default 5 * 10^8
 
 def sum(from, to)
   sum = 0
-  for i in from..to
+  i = from
+  while i <= to
     sum += i
+    i += 1
   end
   sum
 end

@@ -40,6 +40,6 @@ All you need is make and gcc or clang (and node for the js).
 
 *Threads* | C++ | Javascript(node) | Ruby | JRuby
 :--------|:--------:|---------:|---------:|---------:
-1 | 1400ms | 1389ms | 82 674ms | 58 942ms
-2 | 1164ms | N.A.      | 83 735ms | 59 864ms
-4 | 871ms   | N.A.      |  71964ms | 42 655ms
+1 | 1400ms | 1389ms | 32 331ms | 27 773ms
+2 | 733ms | N.A.      | 31 435ms | 21 224ms
+4 | 723ms   | N.A.      |  29 887ms | 22 326ms
