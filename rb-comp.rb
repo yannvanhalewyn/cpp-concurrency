@@ -42,7 +42,8 @@ def test(load, numWorkers)
   result = splitLoadIntoWorkersAndWait(load, numWorkers)
   stop = Time.now
   puts "Solution: #{result}"
-  puts "Elapsed: #{(stop - start) * 1000}ms"
+  elapsed = (stop - start) * 1000
+  puts "Elapsed: #{elapsed.round(3)}ms\n"
 end
 
 test(NUM, 1)
