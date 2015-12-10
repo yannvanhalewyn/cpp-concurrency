@@ -1,6 +1,6 @@
 #! /usr/bin/env ruby
 
-NUM = 100000000
+NUM = ARGV[0] ? ARGV[0].to_i : 500000000 # default 5 * 10^8
 
 def sum(from, to)
   sum = 0
@@ -34,16 +34,6 @@ def splitLoadIntoWorkersAndWait(load, numWorkers)
   end
 
   ret
-end
-
-def splitLoadIntoProcessesAndWait(load, numProcesses)
-  (0..numProcesses-1).each do |i|
-    chunk = splitLoad load, i, numProcesses
-    fork do
-      sum(chunk[:from], chunk[:to])
-    end
-  end
-  Process.waitall
 end
 
 def test(load, numWorkers)

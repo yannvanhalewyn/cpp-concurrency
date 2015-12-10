@@ -4,7 +4,7 @@
 #include "stopwatch.h"
 #include "worker.h"
 
-const long THE_NUMBER = 100000000; // 10^9
+#define DEFAULT 500000000 // 5 * 10^8
 
 // The function we want to stresstest!
 void sum(long from, long to, long* out) {
@@ -53,10 +53,16 @@ void test(long load, int numWorkers) {
 // Running our tests
 int main(int argc, char *argv[])
 {
-    test(THE_NUMBER, 1);
-    test(THE_NUMBER, 2);
-    test(THE_NUMBER, 4);
-    test(THE_NUMBER, 8);
-    test(THE_NUMBER, 16);
+    long load = DEFAULT;
+    if (argc == 2)
+        load = std::stol(argv[1]);
+
+    std::cout << "Running tests for a load of " << load << std::endl;
+
+    test(load, 1);
+    test(load, 2);
+    test(load, 4);
+    test(load, 8);
+    test(load, 16);
     return 0;
 }

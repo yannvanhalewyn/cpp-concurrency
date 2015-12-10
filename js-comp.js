@@ -1,5 +1,9 @@
 #! /usr/bin/env node
 
+var NUMBER = 500000000; // 5 * 10^8
+if (process.argv.length == 3)
+  NUMBER = parseInt(process.argv[2]);
+
 // The function under test
 function sum(x) {
   var sum = 0;
@@ -11,7 +15,7 @@ function sum(x) {
 
 // Timing the result
 var start = new Date().getTime();
-var result = sum(100000000);
+var result = sum(NUMBER);
 var end = new Date().getTime();
 
 console.log("Result: ", result);
