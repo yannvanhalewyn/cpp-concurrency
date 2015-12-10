@@ -3,7 +3,7 @@ CC = g++
 
 # Flags
 CFLAGS = -c -Wall -std=c++1y
-LDLFLAGS =
+LDLFLAGS = -lpthread
 
 # Directories
 SRCDIR = src
@@ -21,7 +21,7 @@ OBJECTS := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 $(EXEC): $(OBJECTS)
 	@[ -d $(BINDIR) ] || (mkdir $(BINDIR) && echo "made $(BINDIR) dir")
-	$(CC) $(LDLFLAGS) $^ -o $@
+	$(CC) $^ -o $@ $(LDLFLAGS)
 
 $(OBJECTS): $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(HEADERS)
 	@[ -d $(dir $@) ] || (mkdir -p $(dir $@) && echo "made dir $(dir $@)")

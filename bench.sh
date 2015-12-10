@@ -1,5 +1,5 @@
 #!/bin/sh
-if [[ ! -f "bin/main" ]]; then
+if [ ! -f "bin/main" ]; then
     echo "No main executable found. Running make."
     make
     echo

@@ -1,6 +1,8 @@
 #ifndef __WORKER_H__
 #define __WORKER_H__
 
+#include <thread>
+
 // A simple worker struct which simply holds the pointer to the output and the
 // thread reference.
 typedef struct Worker {
