@@ -43,7 +43,7 @@ def test(load, numWorkers)
   stop = Time.now
   puts "Solution: #{result}"
   elapsed = (stop - start) * 1000
-  puts "Elapsed: #{elapsed.round(3)}ms\n"
+  puts "Elapsed: #{elapsed.round(3)}ms\n\n"
 end
 
 test(NUM, 1)

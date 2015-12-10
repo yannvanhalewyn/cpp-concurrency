@@ -17,6 +17,18 @@ Run benches (will run make if necessary):
 
 `$ ./bench.sh`
 
+Pass in your own number to run the benches with:
+
+`$ ./bench.sh 20000`
+
+Run any bench with your own number, or not (defaults to 5 * 10^8)
+
+`$ ./bin/main $mynumber`
+
+`$ ruby rb-comp.rb $mynumber`
+
+`$ node js-comp.js $mynumber`
+
 All you need is make and gcc or clang (and node for the js).
 
 
