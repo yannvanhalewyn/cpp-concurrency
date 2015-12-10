@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 // The function under test
 function sum(x) {
   var sum = 0;
