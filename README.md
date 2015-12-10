@@ -4,7 +4,7 @@ Fun with c++ / concurrency + comparisons
 Just having fun with multiple threads in cpp. Comparing the same workload to
 node-js. Pretty impressed with the javascript/node performances!
 
-However, the ruby results were terrible. I'm wondering if I did something wrong here. On a relatively high workload (10^5 numbers), cpp would bench at about 1.5s, javascript ditto and ruby would take more than a minute. Also, adding more workers didn't affect anything. Probably because ruby has a GIL. I tried JRuby as well, same story.  I've also tried forking processes, no luck. Or is ruby just not suitable for calculating stuff? Because calculations are of course a niche occupation for programs :).
+However, the ruby results were terrible. I'm wondering if I did something wrong here. On a relatively high workload (5 * 10^8 numbers), cpp would bench at about 1.5s, javascript ditto and ruby would take more than a minute. Also, adding more workers didn't affect anything. Probably because ruby has a GIL. I tried JRuby as well, same story.  I've also tried forking processes, no luck. Or is ruby just not suitable for calculating stuff? Because calculations are of course a niche occupation for programs :).
 
 ## Running / Building
 ---
